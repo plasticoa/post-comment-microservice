@@ -10,7 +10,7 @@
 /posts/node_modules
 /posts/.pnp
 /posts/pnp.js
-
+/events/node_modules
 # testing
 /coverage
 
