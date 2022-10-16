@@ -4,7 +4,14 @@
 /node_modules
 /.pnp
 .pnp.js
-
+/comments/node_modules
+/comments/.pnp
+/comments/pnp.js
+/posts/node_modules
+/posts/.pnp
+/posts/pnp.js
+/events/node_modules
+/query/node_modules
 # testing
 /coverage
 
