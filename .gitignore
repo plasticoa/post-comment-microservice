@@ -11,6 +11,7 @@
 /posts/.pnp
 /posts/pnp.js
 /events/node_modules
+/query/node_modules
 # testing
 /coverage
 
