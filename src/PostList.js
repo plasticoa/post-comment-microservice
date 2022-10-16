@@ -7,7 +7,7 @@ const PostList = () => {
     const [post, setPost] = useState({});
     const fetchPosts = async () => {
         // send a get request to the posts service
-        const res = await axios.get('http://localhost:4000/posts');
+        const res = await axios.get('http://localhost:4002/posts');
         // set the posts state with the response data
         setPost(res.data);
     }
@@ -15,14 +15,13 @@ const PostList = () => {
     useEffect(() => {
         fetchPosts();
     }, []);
-    console.log(post);
     // render the posts as a list of li elements 
-    const renderPosts = Object.values(post).map(post => {
+    const renderPosts = Object.values(post).map((post) => {
         return (
             <div className='card' key={post.id}>
                 <div className='card-body'>
                     <h3>{post.tittle}</h3>
-                    <CommentList postId={post.id}></CommentList>
+                    <CommentList comments={post.comments} ></CommentList>
                     <CommentCreate postId={post.id}></CommentCreate>
                 </div>
             </div>
