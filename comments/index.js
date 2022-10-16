@@ -21,7 +21,7 @@ app.post('/posts/:id/comments', async (req, res) => {
     //if commentsByPostId[req.params.id] is undefined then it will be set to empty array
     const comments = commentsByPostId[req.params.id] || [];
     //pushing the comment to the array
-    comments.push({ id: commentId, content });
+    comments.push({ id: commentId, content, status: 'pending' });
     //setting the comments to the post id
 
     commentsByPostId[req.params.id] = comments;
@@ -29,15 +29,34 @@ app.post('/posts/:id/comments', async (req, res) => {
     await axios.post('http://localhost:4005/events', {
         type: 'CommentCreated',
         data: {
-            id: commentId, content, postId: req.params.id
+            id: commentId, content, postId: req.params.id, status: 'pending'
         }
     })
 
     res.status(201).send(comments);
 });
 //recive any event incoming from event bus
-app.post('/events', (req, res) => {
+app.post('/events', async (req, res) => {
     console.log("received event", req.body.type);
+    const { type, data } = req.body;
+
+    if (type === 'CommentModerated') {
+        const { postId, id, status, content } = data;
+
+        const commnets = commentsByPostId[postId];
+
+        const comment = commnets.find(comment => {
+            return comment.id === id;
+        });
+        comment.status = status;
+
+        await axios.post('http://localhost:4005/events', {
+            type: 'CommentUpdated',
+            data: {
+                id, status, postId, content
+            }
+        });
+    }
     res.send({});
 })
 app.listen(4001, () => {
